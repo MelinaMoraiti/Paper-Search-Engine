@@ -32,7 +32,6 @@ def normalize_tokens(tokens,option):
     return normalized_tokens
 def preprocess_paper(paper):
     text_content = f"{paper['Title']} {paper['Authors']} {paper['Abstract']} {paper['Subject_Tags']} {paper['Subjects']} {paper['Submitted Date']}"
-
     # Tokenize the text
     tokens = tokenize_text(text_content)
     
@@ -43,6 +42,7 @@ def preprocess_paper(paper):
     normalized_tokens = normalize_tokens(cleaned_tokens, option='l')
     # Join tokens back into a clean text
     cleaned_text = ' '.join(normalized_tokens)
+    #cleaned_text_with_title = f"{paper['Title']} {cleaned_text}"
 
     return cleaned_text
 

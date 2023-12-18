@@ -1,31 +1,50 @@
 import file_operations
 from text_processing import tokenize_text,preprocess_paper
 from collections import defaultdict
+
 class InvertedIndex:
     def __init__(self):
-        self.index = defaultdict(set)
-    def add_document(self, doc_id, tokens):
+        self.index = defaultdict(dict)
+    def add_document(self, doc_id, preprocessed_text):
+        # Tokenize the preprocessed text
+        tokens = tokenize_text(preprocessed_text)
+        #for token in tokens:
+         #   self.index[token].add(doc_id)
+        # Count term frequencies in the document
+        term_freq = defaultdict(int)
         for token in tokens:
-            self.index[token].add(doc_id)
-    def search(self, query_tokens):
-        # Retrieve document IDs for each query token
-        result = set.union(*(self.index.get(token, set()) for token in query_tokens))
+            term_freq[token] += 1
+
+        # Update the inverted index only for terms with occurrences
+        for term, frequency in term_freq.items():
+            if doc_id not in self.index[term]:
+                self.index[term][doc_id] = {'frequency': frequency, 'positions': []}
+            else:
+                self.index[term][doc_id]['frequency'] += frequency
+
+            # Optionally, store positions where the term appears in the document
+            positions = [i for i, t in enumerate(tokens) if t == term]
+            self.index[term][doc_id]['positions'].extend(positions)
+
+    def search(self, query):
+        # Tokenize the query
+        query_tokens = tokenize_text(query)
+        # Retrieve documents for each query token
+        result = set.intersection(*(set(self.index[token]) for token in query_tokens))
         return result
+    def get_term_info(self, term):
+        return self.index.get(term, {})
+    def print(self, terms):
+        for term in terms:
+            term_info = self.get_term_info(term)
+            sorted_docs = sorted(term_info.items(), key=lambda x: x[1]['frequency'])
+            print(f"Inverted Index for term '{term}':")
+            for doc_id, doc_info in sorted_docs:
+                frequency = doc_info.get('frequency', 0)
+                positions = doc_info.get('positions', [])
+                print(f"Document ID: {doc_id}, Frequency: {frequency}, Positions: {positions}")
+            print("="*50)
+    
 
-papers_collection=file_operations.retrieve_data('arXiv_papers.json')
-preprocessed_texts = {}
-for paper in papers_collection:
-    document_id = paper['arXiv ID']
-    preprocessed_texts[document_id] = preprocess_paper(paper)
 
-paper_index = InvertedIndex()
-for doc_id, preprocessed_text in preprocessed_texts.items():
-    # Tokenize the preprocessed text
-    tokens = tokenize_text(preprocessed_text)
-    # Add the document to the inverted index
-    paper_index.add_document(doc_id, tokens)
-# Search for papers containing "transformers" and "language modeling"
-query_terms = [""]
-result = paper_index.search(query_terms)
 
-print("Papers containing 'bugs':", result)

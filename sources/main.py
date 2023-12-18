@@ -1,6 +1,7 @@
 import paper_crawler
 import file_operations
-import text_processing
+from text_processing import preprocess_paper
+from InvertedIndex import InvertedIndex
 import re
 
 #categories = ['cs','cond-mat','astro-ph','math','q-bio','q-fin','gr-qc','hep-ex','hep-lat','hep-ph','hep-th','math-ph','nlin','nucl-ex','nucl-th','physics','quant-ph','stat','econ']  
@@ -13,13 +14,25 @@ import re
 #file_operations.save_data(papers_data,'arXiv_papers.csv')
 
 # load data from file
-papers_data=file_operations.retrieve_data('arXiv_papers.json')
+# text_processing
+papers_collection=file_operations.retrieve_data('../files/arXiv_papers.json')
+preprocessed_texts = {}
+for paper in papers_collection:
+    document_id = paper['arXiv ID']
+    preprocessed_texts[document_id] = preprocess_paper(paper)
 
-print(text_processing.preprocess_paper(papers_data[1350]))
-    
-#print(text_processing.tokenize_text(papers_data[0]['Title']))
-#print(papers_data[2]['Tags'])
-#print(text_processing.preprocess_text(papers_data[40]['Subjects'],'s'))
-#print(text_processing.preprocess_text(papers_data[0]['Submitted Date'],'l'))
-#print(text_processing.normalize_text(papers_data[24]['Abstract']))
+#Create inverted index
+inverted_index = InvertedIndex()
+# Add papers to the inverted index
+for doc_id, preprocessed_text in preprocessed_texts.items():
+    inverted_index.add_document(doc_id, preprocessed_text)
+# Search for documents containing a specific term   
+terms = ["search"]
+query_result = inverted_index.search(terms[0])
+if query_result:
+    print("Papers matching the query:", query_result)
+else:
+    print("No papers match this term")
+inverted_index.print(terms)
+
 
