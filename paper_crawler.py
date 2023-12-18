@@ -1,7 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import json
-import csv
 
 def get_html(url): 
     try: 
@@ -15,13 +13,16 @@ def get_html(url):
          print(e) 
          return ''
     
-def create_urls(search_queries,max_results,start=0,search_type='all',order=''):
+def create_urls(search_queries,max_results_per_page, total_results,search_type='all',order=''):
     target_urls=[]
     base_url = 'https://arxiv.org/search/?'
     for search_query in search_queries:
-        query = f'query={search_query}&searchtype={search_type}&abstracts=show&order={order}&size={max_results}&start={start}'
-        target_url = base_url + query
-        target_urls.append(target_url)
+        total_pages = (total_results + max_results_per_page - 1) // max_results_per_page
+        for page in range(total_pages):
+            start = page * max_results_per_page
+            query = f'query={search_query}&searchtype={search_type}&abstracts=show&order={order}&size={max_results_per_page}&start={start}'
+            target_url = base_url + query
+            target_urls.append(target_url)
     return target_urls
 
 def crawl_websites(urls):
@@ -43,26 +44,36 @@ def extract_papers_metadata(papers):
     for paper in papers:
         links = paper.find('p',class_='list-title is-inline-block')
         arxiv_id = links.find('a', href=True).text.strip()
+
         pdf_a_tag = links.find('span').find('a')
         if pdf_a_tag:
             pdf_link = pdf_a_tag.get('href') 
-        tags = [tag.text.strip() for tag in paper.find_all('span', class_='tag')]
+        # Subject Tags
+        subject_codes = ', '.join([tag.text.strip() for tag in paper.find_all('span', class_=lambda value: value and value.startswith('tag is-small'))])
+        subjects = ', '.join([tag['data-tooltip'] for tag in paper.find_all('span', class_=lambda value: value and value.startswith('tag is-small'))])
+
         title = paper.find('p', class_='title').text.strip()
+        # Authors
         authors_p = paper.find('p', class_='authors')
         if authors_p:
             authors =', '.join([author.text.strip() for author in authors_p.find_all('a')])
-        submitted_date = paper.find('span', string='Submitted').find_next('span').text.strip()
-        abstract_span_without_a = paper.find('span', class_='abstract-full').find('a').decompose()
-        abstract = abstract_span_without_a.text.strip()
+        # Submission Date
+        dates = paper.find('p',class_='is-size-7')
+        submitted_span = dates.find('span', class_='has-text-black-bis has-text-weight-semibold')
+        submitted_date = submitted_span.next_sibling.strip()
+        # Abstract
+        abstract_span = paper.find('span', class_='abstract-full')
+        a_element = abstract_span.find('a').decompose()
+        abstract = abstract_span.text.strip()
         # Add data to the list
         if abstract:
             paper_list.append({
                 'arXiv ID': arxiv_id,
                 'PDF Link': pdf_link,
-                'Tags': tags,
+                'Subject_Tags': subject_codes,
+                'Subjects': subjects,
                 'Title': title,
                 'Authors': authors,
-                'Tags': tags,
                 'Abstract': abstract,
                 'Submitted Date': submitted_date
             })
