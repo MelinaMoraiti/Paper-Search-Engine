@@ -37,7 +37,7 @@ class InvertedIndex:
     def print(self, terms):
         for term in terms:
             term_info = self.get_term_info(term)
-            sorted_docs = sorted(term_info.items(), key=lambda x: x[1]['frequency'])
+            sorted_docs = sorted(term_info.items(), key=lambda x: x[1]['frequency'],reverse=True)
             print(f"Inverted Index for term '{term}':")
             for doc_id, doc_info in sorted_docs:
                 frequency = doc_info.get('frequency', 0)

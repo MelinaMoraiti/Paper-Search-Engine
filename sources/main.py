@@ -27,7 +27,7 @@ inverted_index = InvertedIndex()
 for doc_id, preprocessed_text in preprocessed_texts.items():
     inverted_index.add_document(doc_id, preprocessed_text)
 # Search for documents containing a specific term   
-terms = ["search"]
+terms = ["machine learning"]
 query_result = inverted_index.search(terms[0])
 if query_result:
     print("Papers matching the query:", query_result)
