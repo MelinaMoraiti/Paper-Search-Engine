@@ -30,19 +30,14 @@ def normalize_tokens(tokens,option):
     else:
         raise ValueError("Invalid option. Use 'l' for lemmatization or 's' for stemming.")
     return normalized_tokens
-def preprocess_paper(paper):
-    text_content = f"{paper['Title']} {paper['Authors']} {paper['Abstract']} {paper['Subject_Tags']} {paper['Subjects']} {paper['Submitted Date']}"
-    # Tokenize the text
-    tokens = tokenize_text(text_content)
-    
-    # Clean the tokens from punctuation and stopwords
+def preprocess_text(text):
+    tokens=tokenize_text(text)
     cleaned_tokens = clean_tokens(tokens)
-
-    # Normalize tokens based on the specified option ('l' for lemmatization, 's' for stemming)
-    normalized_tokens = normalize_tokens(cleaned_tokens, option='l')
-    # Join tokens back into a clean text
-    cleaned_text = ' '.join(normalized_tokens)
-    #cleaned_text_with_title = f"{paper['Title']} {cleaned_text}"
-
+    normalized_tokens=normalize_tokens(cleaned_tokens, option='l')
+    cleaned_text = ''.join(normalized_tokens)
     return cleaned_text
+
+def preprocess_paper(paper):
+    text_paper_metadata = f"{paper['Title']} {paper['Authors']} {paper['Abstract']} {paper['Subject_Tags']} {paper['Subjects']} {paper['Submitted Date']}"
+    return text_paper_metadata
 
