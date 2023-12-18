@@ -1,0 +1,4 @@
+\__pycache__
+*.json
+*.csv
+api_web_crawler.py
