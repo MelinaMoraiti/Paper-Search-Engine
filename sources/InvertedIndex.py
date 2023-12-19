@@ -1,5 +1,4 @@
-import file_operations
-from text_processing import tokenize_text,preprocess_paper
+from text_processing import tokenize_text
 from collections import defaultdict
 
 class InvertedIndex:
@@ -8,9 +7,7 @@ class InvertedIndex:
     def add_document(self, doc_id, preprocessed_text):
         # Tokenize the preprocessed text
         tokens = tokenize_text(preprocessed_text)
-        #for token in tokens:
-         #   self.index[token].add(doc_id)
-        # Count term frequencies in the document
+
         term_freq = defaultdict(int)
         for token in tokens:
             term_freq[token] += 1
@@ -25,13 +22,12 @@ class InvertedIndex:
             # Optionally, store positions where the term appears in the document
             positions = [i for i, t in enumerate(tokens) if t == term]
             self.index[term][doc_id]['positions'].extend(positions)
-
+    '''
     def search(self, query):
-        # Tokenize the query
         query_tokens = tokenize_text(query)
-        # Retrieve documents for each query token
         result = set.intersection(*(set(self.index[token]) for token in query_tokens))
         return result
+    '''
     def get_term_info(self, term):
         return self.index.get(term, {})
     def print(self, terms):

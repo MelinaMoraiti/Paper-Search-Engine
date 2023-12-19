@@ -1,6 +1,6 @@
 # text_processing.py
 import nltk
-import string,re
+import string
 from nltk.tokenize import word_tokenize
 nltk.download('stopwords')
 from nltk.corpus import stopwords
