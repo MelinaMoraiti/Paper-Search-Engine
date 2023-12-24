@@ -7,27 +7,19 @@ class InvertedIndex:
     def add_document(self, doc_id, preprocessed_text):
         # Tokenize the preprocessed text
         tokens = tokenize_text(preprocessed_text)
-
         term_freq = defaultdict(int)
         for token in tokens:
             term_freq[token] += 1
-
         # Update the inverted index only for terms with occurrences
         for term, frequency in term_freq.items():
             if doc_id not in self.index[term]:
                 self.index[term][doc_id] = {'frequency': frequency, 'positions': []}
             else:
                 self.index[term][doc_id]['frequency'] += frequency
-
             # Optionally, store positions where the term appears in the document
             positions = [i for i, t in enumerate(tokens) if t == term]
             self.index[term][doc_id]['positions'].extend(positions)
-    '''
-    def search(self, query):
-        query_tokens = tokenize_text(query)
-        result = set.intersection(*(set(self.index[token]) for token in query_tokens))
-        return result
-    '''
+
     def get_term_info(self, term):
         return self.index.get(term, {})
     def print(self, terms):
