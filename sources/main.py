@@ -3,6 +3,7 @@ import file_operations
 from text_processing import preprocess_paper,preprocess_text
 from InvertedIndex import InvertedIndex
 from QueryProcessor import QueryProcessor
+from RetrievalAlgorithms import RetrievalAlgorithms
 """
 categories = ['cs','cond-mat','astro-ph','math','q-bio','q-fin','gr-qc','hep-ex','hep-lat','hep-ph','hep-th','math-ph','nlin','nucl-ex','nucl-th','physics','quant-ph','stat','econ']  
 #query = ['Distributed Systems']
@@ -21,6 +22,9 @@ preprocessed_texts = {}
 for paper in papers_collection:
     document_id = paper['arXiv ID']
     preprocessed_texts[document_id] = preprocess_paper(paper)
+query = "Cryptography and Security"
+result_vsm= RetrievalAlgorithms.vector_space_model(query, preprocessed_texts,0.07)
+print(f"VSM Results for {query}:", result_vsm)
 
 #Create inverted index
 inverted_index = InvertedIndex()
@@ -28,11 +32,10 @@ inverted_index = InvertedIndex()
 for doc_id, preprocessed_text in preprocessed_texts.items():
     inverted_index.add_document(doc_id, preprocessed_text)
 
-user_query = "SymTFT OR C++"
-
 query_processor = QueryProcessor(inverted_index)
-result_docs = query_processor.process_query(user_query)
+result_docs = query_processor.process_query(query)
 if result_docs:
-    print(f"Matching Documents for {user_query}:", result_docs)
+    print(f"Boolean results for {query}:", result_docs)
 else:
     print("No Matches")
+

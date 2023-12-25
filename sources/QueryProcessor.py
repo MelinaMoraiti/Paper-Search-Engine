@@ -3,7 +3,7 @@ class QueryProcessor:
     def __init__(self, inverted_index):
         self.inverted_index = inverted_index
     def process_query(self, user_query):
-        query_tokens = tokenize_text(user_query) # Only tokenize the user query
+        query_tokens = tokenize_text(user_query) # Only tokenize and lowercase the user query
         results = self.boolean_retrieval(query_tokens)
         return results
     def boolean_retrieval(self,processed_query_tokens):

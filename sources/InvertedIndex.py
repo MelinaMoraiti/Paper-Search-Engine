@@ -19,7 +19,6 @@ class InvertedIndex:
             # Optionally, store positions where the term appears in the document
             positions = [i for i, t in enumerate(tokens) if t == term]
             self.index[term][doc_id]['positions'].extend(positions)
-
     def get_term_info(self, term):
         return self.index.get(term, {})
     def print(self, terms):
