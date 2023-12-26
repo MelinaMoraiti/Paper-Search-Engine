@@ -1,11 +1,17 @@
 from text_processing import preprocess_text,tokenize_text
+from VectorSpaceModel import VectorSpaceModel
+from OkapiBM25 import OkapiBM25
 class QueryProcessor:
-    def __init__(self, inverted_index):
+    def __init__(self, inverted_index,preprocessed_docs):
         self.inverted_index = inverted_index
+        self.vector_space_model = VectorSpaceModel(preprocessed_docs)
+        self.okapi_bm25 = OkapiBM25(preprocessed_docs)
     def process_query(self, user_query):
+        vsm_results = self.vector_space_model.retrieve(user_query,0.2)
+        bm25_results = self.okapi_bm25.retrieve(user_query,1.0)
         query_tokens = tokenize_text(user_query) # Only tokenize and lowercase the user query
-        results = self.boolean_retrieval(query_tokens)
-        return results
+        boolean_results = self.boolean_retrieval(query_tokens)
+        return boolean_results,bm25_results,vsm_results
     def boolean_retrieval(self,processed_query_tokens):
         current_documents = None # initialize current docs with None
         current_operator = 'AND'  # Default to AND
