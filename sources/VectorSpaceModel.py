@@ -2,11 +2,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 class VectorSpaceModel:
-    def __init__(self,documents,similarity_threshold=0.5):
+    def __init__(self,documents):
         self.documents = documents
         self.vectorizer = TfidfVectorizer()
         self.tfidf_matrix = None
-        self.similarity_threshold = similarity_threshold
     def add_document(self, doc_id, text):
         self.documents[doc_id] = text
     def build_tfidf_matrix(self):
@@ -19,10 +18,10 @@ class VectorSpaceModel:
         document_vectors = self.tfidf_matrix
         similarities = cosine_similarity(query_vector, document_vectors).flatten()
         return similarities
-    def retrieve_documents_above_threshold(self, query):
+    def retrieve(self, query,similarity_threshold=0.5):
         similarities = self.calculate_similarity(query)
         # Retrieve document IDs with similarity above the threshold
-        matching_document_ids = [doc_id for doc_id, similarity in zip(self.documents.keys(), similarities) if similarity >= self.similarity_threshold]
+        matching_document_ids = [doc_id for doc_id, similarity in zip(self.documents.keys(), similarities) if similarity >= similarity_threshold]
         return matching_document_ids
     def tf_idf_ranking(self, query):
         similarities = self.calculate_similarity(query)
