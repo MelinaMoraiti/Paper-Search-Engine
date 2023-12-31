@@ -24,7 +24,12 @@ class SearchEngine:
         for arxiv_id in results:
             paper = next((p for p in papers_collection if p['arXiv ID'] == arxiv_id), None)
             if paper:
-                filter_match = all(paper[key].lower() == value.lower() for key, value in filters.items())
+                filter_match = all(
+                    (value.lower() in map(str.lower, paper[key])) if isinstance(paper[key], list) and key != 'Authors' else
+                    any(value.lower() in author.lower() for author in paper[key].split(', ')) if ['Authors', 'Subjects', 'Subject_Tags'] else
+                    paper[key].lower() == value.lower()
+                    for key, value in filters.items()
+                )
                 if filter_match:
                     filtered_papers.append(paper)
         return filtered_papers
@@ -33,6 +38,7 @@ class SearchEngine:
             print(f"arXiv ID: {paper['arXiv ID']}")
             print(f"Title: {paper['Title']}")
             print(f"Authors: {paper['Authors']}")
+            print(f"Subject Tags: {paper['Subject_Tags']}")
             print(f"Subjects: {paper['Subjects']}")
             print(f"Submitted Date: {paper['Submitted Date']}")
             print(f"Abstract: {paper['Abstract']}")
@@ -47,10 +53,9 @@ if __name__ == "__main__":
         preprocessed_metadata[document_id] = preprocess_paper(paper)
     search_engine = SearchEngine(preprocessed_metadata)
     search_engine.build_inverted_index()
-    query = "1 December, 2023;"
+    query = "8 December"
     boolean_results, vsm_results, okapiBM25_results = search_engine.search(query)
     print(boolean_results)
-
     filters = {'Submitted Date': query}
     filtered_papers = search_engine.filter_results(boolean_results, filters, papers_collection)
     if filtered_papers:
