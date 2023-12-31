@@ -46,17 +46,17 @@ class SearchEngine:
             print(f"{'-'*200}")
 
 if __name__ == "__main__":
-    papers_collection = retrieve_data('../files/arXiv_papers_less.json')
+    papers_collection = retrieve_data('../files/arXiv_papers.json')
     preprocessed_metadata = {}
     for paper in papers_collection:
         document_id = paper['arXiv ID']
         preprocessed_metadata[document_id] = preprocess_paper(paper)
     search_engine = SearchEngine(preprocessed_metadata)
     search_engine.build_inverted_index()
-    query = "8 December"
-    boolean_results, vsm_results, okapiBM25_results = search_engine.search(query)
+    query = "operating Systems"
+    boolean_results, vsm_results, okapiBM25_results  = search_engine.search(query)
     print(boolean_results)
-    filters = {'Submitted Date': query}
+    filters = {'Subjects': query}
     filtered_papers = search_engine.filter_results(boolean_results, filters, papers_collection)
     if filtered_papers:
         print(f"Filtered papers based on user-selected criteria:")
