@@ -21,7 +21,14 @@
         </select>
         <br>
         <label for="filter_criteria">Filter Criteria (optional):</label>
-        <input type="text" name="filter_criteria" id="filter_criteria">
+        <select name="filter_criteria" id="filter_criteria">
+            <option value="none">None</option>
+            <option value="Authors">Author</option>
+            <option value="Submitted Date">Submission Date</option>
+            <option value="Subjects">Subject</option>
+            <option value="Subject_Tags">Subject Tag</option>
+            <option value="Title">Title</option>
+        </select>
         <br>
         <input type="submit" value="Search">
     </form>
@@ -36,6 +43,7 @@
                     <strong>Title:</strong> {{ paper['Title'] }}<br>
                     <strong>Authors:</strong> {{ paper['Authors'] }}<br>
                     <strong>Subjects:</strong> {{ paper['Subjects'] }}<br>
+                    <strong>Subject Tags:</strong> {{ paper['Subject_Tags'] }}<br>
                     <strong>Submitted Date:</strong> {{ paper['Submitted Date'] }}<br>
                     <strong>Abstract:</strong> {{ paper['Abstract'] }}<br>
                     <strong>PDF Link:</strong> <a href="{{ paper['PDF Link'] }}" target="_blank">{{ paper['PDF Link'] }}</a>
