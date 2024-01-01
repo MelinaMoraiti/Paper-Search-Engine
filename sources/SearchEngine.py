@@ -21,7 +21,7 @@ class SearchEngine:
             return boolean_results, vsm_results, okapiBM25_results
         else:
             return "No matches"
-    def rank_results(self,results):
+    def rank_results(self,results,query):
         ranked_results={}
         for result_id in results:
             ranked_results[result_id] = self.preprocessed_documents[result_id]
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     search_engine.build_inverted_index()
     query = "data structures"
     boolean_results, vsm_results, okapiBM25_results  = search_engine.search(query)
-    print(search_engine.rank_results(boolean_results))
+    print(search_engine.rank_results(boolean_results,query))
     '''
     filters = {'Subjects': query}
     filtered_papers = search_engine.filter_results(boolean_results, filters, papers_collection)
