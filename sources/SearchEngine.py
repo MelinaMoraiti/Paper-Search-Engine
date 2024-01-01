@@ -2,6 +2,7 @@ from QueryProcessor import QueryProcessor
 from file_operations import retrieve_data
 from text_processing import preprocess_paper
 from InvertedIndex import InvertedIndex
+from RankingAlgorithms import RankingAlgorithm
 class SearchEngine:
     def __init__(self, preprocessed_documents=None,inverted_index=None):
         self.inverted_index = inverted_index
@@ -46,16 +47,21 @@ class SearchEngine:
             print(f"{'-'*200}")
 
 if __name__ == "__main__":
-    papers_collection = retrieve_data('../files/arXiv_papers.json')
+    papers_collection = retrieve_data('../files/arXiv_papers_less.json')
     preprocessed_metadata = {}
     for paper in papers_collection:
         document_id = paper['arXiv ID']
         preprocessed_metadata[document_id] = preprocess_paper(paper)
     search_engine = SearchEngine(preprocessed_metadata)
     search_engine.build_inverted_index()
-    query = "operating Systems"
+    query = "oPERATING SYSTEMS"
     boolean_results, vsm_results, okapiBM25_results  = search_engine.search(query)
-    print(boolean_results)
+    result_papers={}
+    for result_id in boolean_results:
+        result_papers[result_id] = preprocessed_metadata[result_id]
+    ranking = RankingAlgorithm()
+    print(ranking.tf_idf_ranking(result_papers,query))
+    '''
     filters = {'Subjects': query}
     filtered_papers = search_engine.filter_results(boolean_results, filters, papers_collection)
     if filtered_papers:
@@ -63,4 +69,5 @@ if __name__ == "__main__":
         search_engine.display_results(filtered_papers)
     else:
         print("No papers found based on the user-selected criteria.")
+    '''
 

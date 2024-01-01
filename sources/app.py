@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import os
 from SearchEngine import SearchEngine
+from RankingAlgorithms import RankingAlgorithm
 from file_operations import retrieve_data
 from text_processing import preprocess_paper
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
@@ -10,8 +11,8 @@ preprocessed_metadata = {}
 for paper in papers_collection:
     document_id = paper['arXiv ID']
     preprocessed_metadata[document_id] = preprocess_paper(paper)
-
 search_engine = SearchEngine(preprocessed_metadata)
+ranking = RankingAlgorithm()
 search_engine.build_inverted_index()
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -31,11 +32,10 @@ def index():
             results = okapiBM25_results
         else:
             return render_template('index.html', error_message='Invalid retrieval algorithm.')
-
+        results = ranking.tf_idf_ranking(result_papers,query)
         if filter_criteria:
             filters = {'author': filter_criteria}  
             results = search_engine.filter_results(results, papers_collection, filters)
-
         if results:
             result_papers = []
             for arxiv_id in results:

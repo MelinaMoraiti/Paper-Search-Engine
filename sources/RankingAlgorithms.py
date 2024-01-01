@@ -6,13 +6,10 @@ class RankingAlgorithm:
     def tf_idf_ranking(documents, query):
         # Combine query and document texts
         all_texts = [query] + list(documents.values())
-
         # Create TF-IDF vectorizer
         vectorizer = TfidfVectorizer()
-
         # Fit and transform the combined text
         tfidf_matrix = vectorizer.fit_transform(all_texts)
-
         # Separate query vector and document vectors
         query_vector = tfidf_matrix[0]
         document_vectors = tfidf_matrix[1:]
