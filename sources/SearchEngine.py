@@ -7,6 +7,7 @@ class SearchEngine:
     def __init__(self, preprocessed_documents=None,inverted_index=None):
         self.inverted_index = inverted_index
         self.preprocessed_documents = preprocessed_documents
+        self.ranking = RankingAlgorithm()
     def build_inverted_index(self):
         inverted_index = InvertedIndex()
         for document_id,preprocessed_text in self.preprocessed_documents.items():
@@ -14,12 +15,18 @@ class SearchEngine:
             inverted_index.add_document(document_id, preprocessed_text)
         self.inverted_index = inverted_index
     def search(self, query):
-        query_processor = QueryProcessor(self.inverted_index, self.preprocessed_documents)
-        boolean_results, vsm_results, okapiBM25_results = query_processor.process_query(query)
+        self.query_processor =  QueryProcessor(self.inverted_index, self.preprocessed_documents)
+        boolean_results, vsm_results, okapiBM25_results = self.query_processor.process_query(query)
         if boolean_results or vsm_results or okapiBM25_results:
             return boolean_results, vsm_results, okapiBM25_results
         else:
             return "No matches"
+    def rank_results(self,results):
+        ranked_results={}
+        for result_id in results:
+            ranked_results[result_id] = self.preprocessed_documents[result_id]
+        ranked_results = self.ranking.tf_idf_ranking(ranked_results,query)
+        return ranked_results
     def filter_results(self, results, filters, papers_collection):
         filtered_papers = []
         for arxiv_id in results:
@@ -54,13 +61,9 @@ if __name__ == "__main__":
         preprocessed_metadata[document_id] = preprocess_paper(paper)
     search_engine = SearchEngine(preprocessed_metadata)
     search_engine.build_inverted_index()
-    query = "oPERATING SYSTEMS"
+    query = "data structures"
     boolean_results, vsm_results, okapiBM25_results  = search_engine.search(query)
-    result_papers={}
-    for result_id in boolean_results:
-        result_papers[result_id] = preprocessed_metadata[result_id]
-    ranking = RankingAlgorithm()
-    print(ranking.tf_idf_ranking(result_papers,query))
+    print(search_engine.rank_results(boolean_results))
     '''
     filters = {'Subjects': query}
     filtered_papers = search_engine.filter_results(boolean_results, filters, papers_collection)
