@@ -5,6 +5,7 @@ from InvertedIndex import InvertedIndex
 from RankingAlgorithms import RankingAlgorithm
 class SearchEngine:
     def __init__(self, preprocessed_documents=None,inverted_index=None):
+        self._current_query = None
         self.inverted_index = inverted_index
         self.preprocessed_documents = preprocessed_documents
         self.ranking = RankingAlgorithm()
@@ -14,9 +15,10 @@ class SearchEngine:
             self.preprocessed_documents[document_id] = preprocessed_text
             inverted_index.add_document(document_id, preprocessed_text)
         self.inverted_index = inverted_index
-    def search(self, query):
+    def search(self,query):
+        self._current_query = query
         self.query_processor =  QueryProcessor(self.inverted_index, self.preprocessed_documents)
-        boolean_results, vsm_results, okapiBM25_results = self.query_processor.process_query(query)
+        boolean_results, vsm_results, okapiBM25_results = self.query_processor.process_query(self._current_query)
         if boolean_results or vsm_results or okapiBM25_results:
             return boolean_results, vsm_results, okapiBM25_results
         else:
@@ -25,7 +27,7 @@ class SearchEngine:
         ranked_results={}
         for result_id in results:
             ranked_results[result_id] = self.preprocessed_documents[result_id]
-        ranked_results = self.ranking.tf_idf_ranking(ranked_results,query)
+        ranked_results = self.ranking.tf_idf_ranking(ranked_results,self._current_query)
         return ranked_results
     def filter_results(self, results, filters, papers_collection):
         filtered_papers = []
@@ -41,6 +43,8 @@ class SearchEngine:
                 if filter_match:
                     filtered_papers.append(paper)
         return filtered_papers
+    def get_current_query(self):
+        return self._current_query
     def display_results(self,results):
         for paper in results:
             print(f"arXiv ID: {paper['arXiv ID']}")
@@ -59,9 +63,10 @@ if __name__ == "__main__":
     for paper in papers_collection:
         document_id = paper['arXiv ID']
         preprocessed_metadata[document_id] = preprocess_paper(paper)
+    query = "data structures"
     search_engine = SearchEngine(preprocessed_metadata)
     search_engine.build_inverted_index()
-    query = "data structures"
+    
     boolean_results, vsm_results, okapiBM25_results  = search_engine.search(query)
     print(search_engine.rank_results(boolean_results,query))
     '''
