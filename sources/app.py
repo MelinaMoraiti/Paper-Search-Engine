@@ -14,13 +14,13 @@ for paper in papers_collection:
 search_engine = SearchEngine(preprocessed_metadata)
 ranking = RankingAlgorithm()
 search_engine.build_inverted_index()
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         query = request.form['query']
         algorithm = request.form['algorithm']
         filter_criteria = request.form['filter_criteria']
-
         if algorithm == 'boolean':
             boolean_results, _, _ = search_engine.search(query)
             results = boolean_results
@@ -32,13 +32,13 @@ def index():
             results = okapiBM25_results
         else:
             return render_template('index.html', error_message='Invalid retrieval algorithm.')
-        results = ranking.tf_idf_ranking(result_papers,query)
-        if filter_criteria:
-            filters = {'author': filter_criteria}  
-            results = search_engine.filter_results(results, papers_collection, filters)
-        if results:
+        results_ranked = search_engine.rank_results(results)
+        if filter_criteria != 'none':
+            filters = {filter_criteria: query}  
+            results = search_engine.filter_results(results_ranked, filters, papers_collection)
+        if results_ranked:
             result_papers = []
-            for arxiv_id in results:
+            for arxiv_id in results_ranked:
                 paper = next((p for p in papers_collection if p['arXiv ID'] == arxiv_id), None)
                 if paper:
                     result_papers.append(paper)
