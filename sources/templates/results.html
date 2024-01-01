@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Paper Search Results</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+
+    {% if no_results %}
+        <p>No results found.</p>
+    {% elif papers %}
+        <ul>
+            {% for paper in papers %}
+                <li>
+                    <strong>Title:</strong> {{ paper['Title'] }}<br>
+                    <strong>Authors:</strong> {{ paper['Authors'] }}<br>
+                    <strong>Subjects:</strong> {{ paper['Subjects'] }}<br>
+                    <strong>Subject Tags:</strong> {{ paper['Subject_Tags'] }}<br>
+                    <strong>Submitted Date:</strong> {{ paper['Submitted Date'] }}<br>
+                    <strong>Abstract:</strong> {{ paper['Abstract'] }}<br>
+                    <strong>PDF Link:</strong> <a href="{{ paper['PDF Link'] }}" target="_blank">{{ paper['PDF Link'] }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
