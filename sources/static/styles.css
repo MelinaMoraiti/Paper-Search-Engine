@@ -5,7 +5,11 @@ body {
     padding: 0;
     background-color: #f7cac9; /* Background color */
 }
-
+.no-results {
+    text-align: center;
+    margin-top: 300px;
+    color: #800000; /* Header text color */
+}
 h1 {
     text-align: center;
     margin-top: 20px;

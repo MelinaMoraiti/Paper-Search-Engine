@@ -22,8 +22,9 @@ class SearchEngine:
         if boolean_results or vsm_results or okapiBM25_results:
             return boolean_results, vsm_results, okapiBM25_results
         else:
-            return "No matches"
+            return None,None,None
     def rank_results(self,results,query):
+        self._current_query = query
         ranked_results={}
         for result_id in results:
             ranked_results[result_id] = self.preprocessed_documents[result_id]
