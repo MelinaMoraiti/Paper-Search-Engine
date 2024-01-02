@@ -32,7 +32,8 @@ def index():
             results = okapiBM25_results
         else:
             return render_template('index.html', error_message='Invalid retrieval algorithm.')
-        results_ranked = search_engine.rank_results(results,query)
+        if results: results_ranked = search_engine.rank_results(results,query)
+        else: return render_template('results.html', query=query, no_results=True)
         if filter_criteria != 'none':
             filters = {filter_criteria: query}  
             results = search_engine.filter_results(results_ranked, filters, papers_collection)
@@ -44,7 +45,7 @@ def index():
                     result_papers.append(paper)
             return render_template('results.html', query=query, papers=result_papers)
         else:
-            return render_template('search_form.html', query=query, no_results=True)
+            return render_template('results.html', query=query, no_results=True)
 
     return render_template('search_form.html')
 
