@@ -63,7 +63,7 @@ if __name__ == "__main__":
     for paper in papers_collection:
         document_id = paper['arXiv ID']
         preprocessed_metadata[document_id] = preprocess_paper(paper)
-    query = "data structures"
+    query = "economic development"
     search_engine = SearchEngine(preprocessed_metadata)
     search_engine.build_inverted_index()
     
