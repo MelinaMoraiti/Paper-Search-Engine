@@ -4,14 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academic Paper Search</title>
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Academic Paper Search</h1>
+    <h1>Scientific Paper Search</h1>
     <form method="POST" action="/">
-        <label for="query">Search Query:</label>
-        <input type="text" name="query" id="query" required>
+        <div class="search__container">
+            <p class="search__title">
+                Go ahead, hover over search
+            </p>
+            <input class="search__input" type="text" name="query" id="query" placeholder="Search for a paper" required>
+            <button type="submit" class="search__button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        
         <br>
         <label for="algorithm">Retrieval Algorithm:</label>
         <select name="algorithm" id="algorithm">
@@ -20,7 +31,7 @@
             <option value="okapiBM25">Okapi BM25</option>
         </select>
         <br>
-        <label for="filter_criteria">Filter (optional):</label>
+        <label for="filter_criteria">Search by (optional):</label>
         <select name="filter_criteria" id="filter_criteria">
             <option value="none">None</option>
             <option value="Authors">Author</option>
@@ -30,7 +41,6 @@
             <option value="Title">Title</option>
         </select>
         <br>
-        <input type="submit" value="Search">
     </form>
 
     {% if error_message %}

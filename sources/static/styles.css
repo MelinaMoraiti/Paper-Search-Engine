@@ -1,58 +1,88 @@
-/* styles.css */
-
-h1 {
-    color: #4CAF50;
+/* Global Styles */
+body {
+    font-family: 'Raleway', 'Lato', sans-serif;
+    margin: 0 auto;
+    padding: 0;
+    background-color: #f7cac9; /* Background color */
 }
 
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #008080; /* Header text color */
+}
+
+/* Search Container Styles */
+.search__container {
+    padding-top: 64px;
+}
+
+.search__title {
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: #800000; /* Search title color */
+}
+.search__input::placeholder{
+    color: color(#575756 a(0.8));
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+.search__input {
+    width: 50%;
+    padding: 12px 24px;
+    font-size: 16px;
+    line-height: 18px;
+    transition: all 500ms ease-in-out 250ms;
+    margin: 20px auto;
+    border-radius: 50px;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    background-repeat: no-repeat;
+    border: 1px solid #575756;
+    background-color: transparent;
+}
+.search__input:hover,.search__input:focus{
+        padding: 12px 0;
+        outline: 0;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #575756;
+        border-radius: 0;
+        background-position: 100% center;
+}
+/* Form Styles */
 form {
-    margin-bottom: 20px;
+    text-align: center;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin: 10px 0;
+    color: #800000; /* Label text color */
 }
 
-input[type="text"],
-select,
-input[type="submit"] {
-    width: 100%;
+select {
     padding: 8px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
+    font-size: 16px;
+    background-color:white; /* Form element background color */
+    color: #000; /* Form element text color */
+    border: none;
+    border-radius: 5px;
+    margin-top: 5px;
+    cursor: pointer;
 }
-
-input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
+.search__button {
+    background-color: #f7cac9; /* Search button background color */
+    color: black; /* Search button text color */
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    margin-top: 10px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-strong {
-    font-weight: bold;
-    margin-right: 5px;
-}
-
-a {
-    color: #007BFF;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
+/* Error Message Styles */
+p {
+    color: #800000; /* Error message text color */
 }
