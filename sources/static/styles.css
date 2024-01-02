@@ -16,13 +16,16 @@ h1 {
 .search__container {
     padding-top: 64px;
 }
-
+.search__input-group {
+    margin-right: 600px;
+}
 .search__title {
     font-size: 24px;
     font-weight: 900;
     margin-bottom: 10px;
     color: #800000; /* Search title color */
 }
+
 .search__input::placeholder{
     color: color(#575756 a(0.8));
     text-transform: uppercase;
@@ -57,18 +60,23 @@ form {
 
 label {
     display: block;
-    margin: 10px 0;
     color: #800000; /* Label text color */
 }
-
+.filter__container {
+    margin-left: 1000px;
+    margin-top: -66px
+}
+.algorithm__container{
+    margin-left: 1200px;
+    margin-top: -90px
+}
 select {
-    padding: 8px;
+    padding: 5px;
     font-size: 16px;
     background-color:white; /* Form element background color */
     color: #000; /* Form element text color */
-    border: none;
+    border: 1px solid black;
     border-radius: 5px;
-    margin-top: 5px;
     cursor: pointer;
 }
 .search__button {
@@ -82,7 +90,6 @@ select {
     cursor: pointer;
 }
 
-/* Error Message Styles */
 p {
     color: #800000; /* Error message text color */
 }

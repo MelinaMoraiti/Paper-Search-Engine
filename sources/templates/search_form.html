@@ -12,36 +12,39 @@
 </head>
 <body>
     <h1>Scientific Paper Search</h1>
-    <form method="POST" action="/">
-        <div class="search__container">
+    <div class="search__container">
+        <form method="POST" action="/">
             <p class="search__title">
                 Go ahead, hover over search
             </p>
-            <input class="search__input" type="text" name="query" id="query" placeholder="Search for a paper" required>
-            <button type="submit" class="search__button">
-                <i class="fas fa-search"></i>
-            </button>
+            <div class="search__input-group">
+                <input class="search__input" type="text" name="query" id="query" placeholder="Search for a paper" required>
+                <button type="submit" class="search__button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
         </div>
-        
-        <br>
-        <label for="algorithm">Retrieval Algorithm:</label>
-        <select name="algorithm" id="algorithm">
-            <option value="boolean">Boolean Retrieval</option>
-            <option value="vsm">Vector Space Model</option>
-            <option value="okapiBM25">Okapi BM25</option>
-        </select>
-        <br>
-        <label for="filter_criteria">Search by (optional):</label>
-        <select name="filter_criteria" id="filter_criteria">
-            <option value="none">None</option>
-            <option value="Authors">Author</option>
-            <option value="Submitted Date">Submission Date</option>
-            <option value="Subjects">Subject</option>
-            <option value="Subject_Tags">Subject Tag</option>
-            <option value="Title">Title</option>
-        </select>
-        <br>
-    </form>
+        <div class="algorithm__container">
+            <label for="algorithm">Retrieval Algorithm:</label>
+            <select name="algorithm" id="algorithm">
+                <option value="boolean">Boolean Retrieval</option>
+                <option value="vsm">Vector Space Model</option>
+                <option value="okapiBM25">Okapi BM25</option>
+            </select>
+        </div>
+        <div class="filter__container">
+            <label for="filter_criteria">Search by (optional):</label>
+            <select name="filter_criteria" id="filter_criteria">
+                <option value="none">None</option>
+                <option value="Authors">Author</option>
+                <option value="Submitted Date">Submission Date</option>
+                <option value="Subjects">Subject</option>
+                <option value="Subject_Tags">Subject Tag</option>
+                <option value="Title">Title</option>
+            </select>
+        </div>
+        </form>
+    </div>
 
     {% if error_message %}
         <p>{{ error_message }}</p>
