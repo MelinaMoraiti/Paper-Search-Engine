@@ -15,6 +15,7 @@
         <ul>
             {% for paper in papers %}
                 <li>
+                    <strong>arXiv ID:</strong> {{ paper['arXiv ID'] }}<br>
                     <strong>Title:</strong> {{ paper['Title'] }}<br>
                     <strong>Authors:</strong> {{ paper['Authors'] }}<br>
                     <strong>Subjects:</strong> {{ paper['Subjects'] }}<br>
