@@ -23,12 +23,5 @@ class VectorSpaceModel:
         # Retrieve document IDs with similarity above the threshold
         matching_document_ids = [doc_id for doc_id, similarity in zip(self.documents.keys(), similarities) if similarity >= similarity_threshold]
         return matching_document_ids
-    def tf_idf_ranking(self, query):
-        similarities = self.calculate_similarity(query)
-        # Sort documents by similarity in descending order
-        sorted_documents = sorted(enumerate(similarities), key=lambda x: x[1], reverse=True)
-        # Return document IDs in sorted order
-        ranked_document_ids = [list(self.documents.keys())[index] for index, _ in sorted_documents]
-        return ranked_document_ids
 
 
