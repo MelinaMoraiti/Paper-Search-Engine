@@ -19,10 +19,7 @@ class SearchEngine:
         self._current_query = query
         self.query_processor =  QueryProcessor(self.inverted_index, self.preprocessed_documents)
         boolean_results, vsm_results, okapiBM25_results = self.query_processor.process_query(self._current_query)
-        if boolean_results or vsm_results or okapiBM25_results:
-            return boolean_results, vsm_results, okapiBM25_results
-        else:
-            return None,None,None
+        return boolean_results, vsm_results, okapiBM25_results
     def rank_results(self,results,query):
         self._current_query = query
         ranked_results={}
@@ -37,7 +34,7 @@ class SearchEngine:
             if paper:
                 filter_match = all(
                     (value.lower() in map(str.lower, paper[key])) if isinstance(paper[key], list) and key != 'Authors' else
-                    any(value.lower() in author.lower() for author in paper[key].split(', ')) if ['Authors', 'Subjects', 'Subject_Tags'] else
+                    any(value.lower() in author.lower() for author in paper[key].split(', ')) if ['Authors', 'Subjects', 'Subject_Tags','Submitted Date'] else
                     paper[key].lower() == value.lower()
                     for key, value in filters.items()
                 )
@@ -64,19 +61,16 @@ if __name__ == "__main__":
     for paper in papers_collection:
         document_id = paper['arXiv ID']
         preprocessed_metadata[document_id] = preprocess_paper(paper)
-    query = "economic development"
+    query = "differential geometry"
     search_engine = SearchEngine(preprocessed_metadata)
     search_engine.build_inverted_index()
     
     boolean_results, vsm_results, okapiBM25_results  = search_engine.search(query)
-    print(search_engine.rank_results(boolean_results,query))
-    '''
+    results_ranked = search_engine.rank_results(vsm_results,query)
     filters = {'Subjects': query}
-    filtered_papers = search_engine.filter_results(boolean_results, filters, papers_collection)
+    filtered_papers = search_engine.filter_results(results_ranked, filters, papers_collection)
     if filtered_papers:
         print(f"Filtered papers based on user-selected criteria:")
         search_engine.display_results(filtered_papers)
     else:
         print("No papers found based on the user-selected criteria.")
-    '''
-
