@@ -2,7 +2,6 @@
 body {
     font-family: 'Raleway', 'Lato', sans-serif;
     margin: 0 auto;
-    padding: 0;
     background-color: #f7cac9; /* Background color */
 }
 .no-results {
@@ -20,13 +19,11 @@ h1 {
 .search__container {
     padding-top: 64px;
 }
-.search__input-group {
-    margin-right: 600px;
-}
+
 .search__title {
     font-size: 24px;
     font-weight: 900;
-    margin-bottom: 10px;
+    text-align: center;
     color: #800000; /* Search title color */
 }
 
@@ -38,9 +35,9 @@ h1 {
 .search__input {
     width: 50%;
     padding: 12px 24px;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 18px;
-    transition: all 500ms ease-in-out 250ms;
+    transition: all 250ms ease-in-out ;
     margin: 20px auto;
     border-radius: 50px;
     backface-visibility: hidden;
@@ -64,23 +61,26 @@ form {
 
 label {
     display: block;
+    font-size: 18px;
     color: #800000; /* Label text color */
 }
+.options__container {
+    display: flex;
+    justify-content: center;
+}
+
+.algorithm__container,
 .filter__container {
-    margin-left: 1000px;
-    margin-top: -66px
+    width: 11%; 
 }
-.algorithm__container{
-    margin-left: 1200px;
-    margin-top: -90px
-}
+
 select {
     padding: 5px;
-    font-size: 16px;
-    background-color:white; /* Form element background color */
-    color: #000; /* Form element text color */
-    border: 1px solid black;
+    font-size: 17px;
+    background-color:white; 
+    color: #000;
     border-radius: 5px;
+    border: 1px solid black;
     cursor: pointer;
 }
 .search__button {
@@ -90,7 +90,7 @@ select {
     padding: 8px 16px;
     font-size: 16px;
     margin-top: 10px;
-    border-radius: 5px;
+    border-radius: 2px;
     cursor: pointer;
 }
 
