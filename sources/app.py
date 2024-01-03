@@ -21,14 +21,12 @@ def index():
         query = request.form['query']
         algorithm = request.form['algorithm']
         filter_criteria = request.form['filter_criteria']
+        boolean_results,vsm_results,okapiBM25_results = search_engine.search(query)
         if algorithm == 'boolean':
-            boolean_results, _, _ = search_engine.search(query)
             results = boolean_results
         elif algorithm == 'vsm':
-            _, vsm_results, _ = search_engine.search(query)
             results = vsm_results
         elif algorithm == 'okapiBM25':
-            _, _, okapiBM25_results = search_engine.search(query)
             results = okapiBM25_results
         else:
             return render_template('index.html', error_message='Invalid retrieval algorithm.')
