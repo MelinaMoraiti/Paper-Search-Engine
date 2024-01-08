@@ -20,7 +20,6 @@ class VectorSpaceModel:
         return similarities
     def retrieve(self, query,similarity_threshold=0.5):
         similarities = self.calculate_similarity(query)
-        # Retrieve document IDs with similarity above the threshold
         matching_document_ids = [doc_id for doc_id, similarity in zip(self.documents.keys(), similarities) if similarity >= similarity_threshold]
         return matching_document_ids
 

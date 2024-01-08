@@ -61,10 +61,15 @@ if __name__ == "__main__":
     for paper in papers_collection:
         document_id = paper['arXiv ID']
         preprocessed_metadata[document_id] = preprocess_paper(paper)
+   
     query = "differential geometry"
     search_engine = SearchEngine(preprocessed_metadata)
     search_engine.build_inverted_index()
-    
+    terms = ['gravity']
+    print (search_engine.inverted_index.get_term_info('gravity'))
+    doc_freq = len(search_engine.inverted_index.get_term_info('gravity'))
+    print("Document frequency: ",doc_freq)
+    exit(0)
     boolean_results, vsm_results, okapiBM25_results  = search_engine.search(query)
     results_ranked = search_engine.rank_results(vsm_results,query)
     filters = {'Subjects': query}

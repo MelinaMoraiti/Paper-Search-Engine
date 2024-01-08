@@ -1,8 +1,7 @@
 import math
 from collections import Counter
 from sklearn.feature_extraction.text import TfidfVectorizer
-from text_processing import tokenize_text,preprocess_paper
-import file_operations
+from text_processing import tokenize_text
 class OkapiBM25:
     def __init__(self, documents, k1=1.5, b=0.75):
         self.k1 = k1
