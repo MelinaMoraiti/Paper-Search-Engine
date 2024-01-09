@@ -6,7 +6,7 @@ from file_operations import retrieve_data
 from text_processing import preprocess_paper
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
-papers_collection = retrieve_data('../files/arXiv_papers.json')
+papers_collection = retrieve_data('../datasets/arXiv_papers_less.json')
 preprocessed_metadata = {}
 for paper in papers_collection:
     document_id = paper['arXiv ID']
@@ -33,7 +33,8 @@ def index():
         else:
             return render_template('search_form.html', error_message='Invalid retrieval algorithm.')
         if results: 
-            results_ranked = search_engine.rank_results(results,query)
+            if algorithm == 'boolean': results_ranked = search_engine.rank_results(results,query)
+            else: results_ranked =results
             if filter_criteria != 'none':
                 filters = {filter_criteria: query}  
                 filtered_results = search_engine.filter_results(results_ranked, filters, papers_collection)
