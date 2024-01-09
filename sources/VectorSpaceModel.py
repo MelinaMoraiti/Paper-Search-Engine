@@ -6,6 +6,7 @@ class VectorSpaceModel:
         self.documents = documents
         self.vectorizer = TfidfVectorizer()
         self.tfidf_matrix = None
+        self.doc_ids = list(self.documents.keys())
     def add_document(self, doc_id, text):
         self.documents[doc_id] = text
     def build_tfidf_matrix(self):
@@ -20,7 +21,6 @@ class VectorSpaceModel:
         return similarities
     def retrieve(self, query,similarity_threshold=0.5):
         similarities = self.calculate_similarity(query)
-        matching_document_ids = [doc_id for doc_id, similarity in zip(self.documents.keys(), similarities) if similarity >= similarity_threshold]
+        sorted_results = sorted(enumerate(similarities), key=lambda x: x[1], reverse=True) #Sort results by similarities
+        matching_document_ids = [self.doc_ids[i] for i, similarity in sorted_results if similarity >= similarity_threshold]
         return matching_document_ids
-
-

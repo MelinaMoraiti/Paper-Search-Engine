@@ -46,9 +46,6 @@ class OkapiBM25:
         return score
     def retrieve(self, query,score_threshold=1.0):
         scores = [(doc_id, self.calculate_bm25_score(query, doc_id)) for doc_id in self.documents]
-        # Filter documents based on the score threshold
-        matching_documents = [doc_id for doc_id, score in scores if score >= score_threshold]
-        # Sort documents by score in descending order
-        ranked_documents = sorted(matching_documents, key=lambda x: x[1], reverse=True)
-        return ranked_documents
-
+        sorted_results = sorted(scores, key=lambda x: x[1], reverse=True) #Sort the results by similarity scores
+        matching_documents = [doc_id for doc_id, score in sorted_results if score >= score_threshold]
+        return matching_documents
