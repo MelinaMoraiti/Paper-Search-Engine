@@ -2,20 +2,19 @@ from file_operations import retrieve_data
 from text_processing import preprocess_paper
 from sklearn.metrics import precision_score, recall_score, f1_score
 from SearchEngine import SearchEngine
-from subprocess import run, PIPE
+#from subprocess import run, PIPE
 
 class Evaluator:
     def __init__(self, search_engine, ground_truth):
         self.search_engine = search_engine
-        self.ground_truth_file = ground_truth_file
+        self.ground_truth = ground_truth
 
-    def evaluate(self, queries,output_file):
+    def evaluate(self, queries):
         results = {
             'boolean': [],
             'vsm': [],
             'okapi_bm25': [],
         }
-
         for query in queries:
             boolean_papers, vsm_papers, okapi_papers = self.search_engine.search(query)
 
@@ -30,16 +29,10 @@ class Evaluator:
             # Evaluate Okapi BM25 retrieval
             okapi_metrics = self.calculate_metrics(okapi_papers)
             results['okapi_bm25'].append(okapi_metrics)
-        self.save_results_to_file(queries, results, output_file)
-        # Run TREC_EVAL
-        trec_eval_cmd = f"trec_eval -m all_trec -q {self.ground_truth_file} {output_file}"
-        trec_eval_output = run(trec_eval_cmd, shell=True, stdout=PIPE, text=True)
-        # Parse TREC_EVAL output
-        parsed_metrics = self.parse_trec_eval_output(trec_eval_output.stdout)
-        return parsed_metrics
+        return results
 
     def calculate_metrics(self, retrieved_docs):
-        y_true = [1 if doc_id in self.ground_truth_file else 0 for doc_id in retrieved_docs]
+        y_true = [1 if doc_id in self.ground_truth else 0 for doc_id in retrieved_docs]
         y_pred = [1] * len(retrieved_docs)
 
         precision = precision_score(y_true, y_pred, zero_division=1)
@@ -51,6 +44,7 @@ class Evaluator:
             'recall': recall,
             'f1': f1,
         }
+    '''
     def save_results_to_file(self, queries, results, output_file):
         with open(output_file, 'w') as file:
             for i, query in enumerate(queries, start=1):
@@ -83,7 +77,7 @@ class Evaluator:
                     'f1': f1,
                 }
         return parsed_metrics
-
+        '''
 
 papers_collection = retrieve_data('../datasets/arXiv_papers_less.json')
 preprocessed_metadata = {}
@@ -94,12 +88,6 @@ for paper in papers_collection:
 search_engine = SearchEngine(preprocessed_metadata)
 search_engine.build_inverted_index()
 queries = ['cs.AI', 'Neural networks', '9 December', 'Oren Ben-Zwi']
-ground_truth_file = 'ground_truth.trec'
-output_file = 'results.trec'
-evaluator = Evaluator(search_engine, ground_truth_file)
-parsed_metrics = evaluator.evaluate(queries, output_file)
-
-'''
 # Assuming ground_truth is VSM
 total_ground_truth = []
 for query in queries:
@@ -112,4 +100,3 @@ for algorithm, metrics_list in results.items():
     print(f"\nMetrics for {algorithm} retrieval:")
     for i, metrics in enumerate(metrics_list, start=1):
         print(f"{queries[i-1]}: Precision={metrics['precision']}, Recall={metrics['recall']}, F1={metrics['f1']}")
-'''
