@@ -21,6 +21,7 @@ class InvertedIndex:
             self.index[term][doc_id]['positions'].extend(positions)
     def get_term_info(self, term):
         return self.index.get(term, {})
+    '''
     def print(self, terms):
         for term in terms:
             term_info = self.get_term_info(term)
@@ -31,7 +32,7 @@ class InvertedIndex:
                 positions = doc_info.get('positions', [])
                 print(f"Document ID: {doc_id}, Frequency: {frequency}, Positions: {positions}")
             print("="*50)
-    
+    '''
 
 
 
