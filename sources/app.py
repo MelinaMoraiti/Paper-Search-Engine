@@ -6,7 +6,7 @@ from file_operations import retrieve_data
 from text_processing import preprocess_paper
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
-papers_collection = retrieve_data('../datasets/arXiv_papers_less.json')
+papers_collection = retrieve_data('../datasets/arXiv_papers.json')
 preprocessed_metadata = {}
 for paper in papers_collection:
     document_id = paper['arXiv ID']
