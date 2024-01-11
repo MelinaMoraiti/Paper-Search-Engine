@@ -1,3 +1,4 @@
 sources/__pycache__
 datasets
+sources/main.py
 sources/api_web_crawler.py
