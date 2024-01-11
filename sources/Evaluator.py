@@ -2,7 +2,6 @@ from file_operations import retrieve_data
 from text_processing import preprocess_paper
 from sklearn.metrics import precision_score, recall_score, f1_score
 from SearchEngine import SearchEngine
-#from subprocess import run, PIPE
 
 class Evaluator:
     def __init__(self, search_engine, ground_truth):
@@ -35,50 +34,15 @@ class Evaluator:
         y_true = [1 if doc_id in self.ground_truth else 0 for doc_id in retrieved_docs]
         y_pred = [1] * len(retrieved_docs)
 
-        precision = precision_score(y_true, y_pred, zero_division=1)
-        recall = recall_score(y_true, y_pred, zero_division=1)
-        f1 = f1_score(y_true, y_pred, zero_division=1)
+        precision = precision_score(y_true, y_pred, zero_division=0)
+        recall = recall_score(y_true, y_pred, zero_division=0)
+        f1 = f1_score(y_true, y_pred, zero_division=0)
 
         return {
             'precision': precision,
             'recall': recall,
             'f1': f1,
         }
-    '''
-    def save_results_to_file(self, queries, results, output_file):
-        with open(output_file, 'w') as file:
-            for i, query in enumerate(queries, start=1):
-                for algorithm, metrics in results.items():
-                    file.write(f"{algorithm} Q{i} {metrics[i-1]['precision']} {metrics[i-1]['recall']} {metrics[i-1]['f1']} run_id\n")
-    def parse_trec_eval_output(self,trec_eval_output):
-        parsed_metrics = {}  # Dictionary to store parsed metrics
-
-        lines = trec_eval_output.split('\n')
-
-        for line in lines:
-            if line.strip():  # Skip empty lines
-                fields = line.split()
-            
-                if fields[0] == 'runid':
-                    continue  # Skip lines containing overall run information
-
-                algorithm = fields[1]
-                query_id = int(fields[2][1:])  # Extract query ID from "QX" format
-                precision = float(fields[3])
-                recall = float(fields[4])
-                f1 = float(fields[5])
-
-                if algorithm not in parsed_metrics:
-                    parsed_metrics[algorithm] = {}
-
-                parsed_metrics[algorithm][query_id] = {
-                    'precision': precision,
-                    'recall': recall,
-                    'f1': f1,
-                }
-        return parsed_metrics
-        '''
-
 papers_collection = retrieve_data('../datasets/arXiv_papers_less.json')
 preprocessed_metadata = {}
 for paper in papers_collection:
@@ -87,11 +51,21 @@ for paper in papers_collection:
 
 search_engine = SearchEngine(preprocessed_metadata)
 search_engine.build_inverted_index()
-queries = ['cs.AI', 'Neural networks', '9 December', 'Oren Ben-Zwi']
-# Assuming ground_truth is VSM
+queries = [
+    "Investigating the Impact of Climate Change on Global Ecosystems and Biodiversity Conservation Strategies", # Long Query
+    "Renewable Energy Sources", # Short Query
+    "Analyzing the Interplay of Quantum Algorithms and Machine Learning Models in Real-world Applications", # Complex Query
+    "Process", # Simple Query
+    "Hanyu Li, Wenhan Huang", # Authors Query
+    "Information Retrieval", # Subjects Query
+    "cs.AI", # Subject Tags Query
+    "Recent Developments in Dark Matter Detection Technologies", # Title Query
+    "July 2023" # Date Query
+]
+
 total_ground_truth = []
 for query in queries:
-    ground_truth,_,_ = search_engine.search(query)
+    _,_,ground_truth = search_engine.search(query)
     total_ground_truth += ground_truth
 evaluator = Evaluator(search_engine, total_ground_truth)
 results = evaluator.evaluate(queries)
