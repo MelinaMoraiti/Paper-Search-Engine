@@ -9,6 +9,12 @@ class SearchEngine:
         self.inverted_index = inverted_index
         self.preprocessed_documents = preprocessed_documents
         self.ranking = RankingAlgorithm()
+    def build_preprocessed_documents(self,papers_collection):
+        preprocessed_documents = {}
+        for paper in papers_collection:
+            document_id = paper['arXiv ID']
+            preprocessed_documents[document_id] = preprocess_paper(paper)
+        self.preprocessed_documents = preprocessed_documents
     def build_inverted_index(self):
         inverted_index = InvertedIndex()
         for document_id,preprocessed_text in self.preprocessed_documents.items():
