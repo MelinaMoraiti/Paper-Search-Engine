@@ -1,18 +1,12 @@
 from flask import Flask, render_template, request
 import os
 from SearchEngine import SearchEngine
-from RankingAlgorithms import RankingAlgorithm
 from file_operations import retrieve_data
-from text_processing import preprocess_paper
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
 papers_collection = retrieve_data('../datasets/arXiv_papers.json')
-preprocessed_metadata = {}
-for paper in papers_collection:
-    document_id = paper['arXiv ID']
-    preprocessed_metadata[document_id] = preprocess_paper(paper)
-search_engine = SearchEngine(preprocessed_metadata)
-ranking = RankingAlgorithm()
+search_engine = SearchEngine()
+search_engine.build_preprocessed_documents(papers_collection)
 search_engine.build_inverted_index()
 
 @app.route('/', methods=['GET', 'POST'])
@@ -39,17 +33,17 @@ def index():
                 filters = {filter_criteria: query}  
                 filtered_results = search_engine.filter_results(results_ranked, filters, papers_collection)
                 if filtered_results:
-                    return render_template('results.html', query=query,papers=filtered_results)
-                else: return render_template('results.html', query=query, no_results=True)
+                    return render_template('results.html', query=query,papers=filtered_results,num_results=len(filtered_results))
+                else: return render_template('results.html', query=query, no_results=True,num_results=0)
             else: 
                 result_papers=[]
                 for arxiv_id in results_ranked:
                     paper = next((p for p in papers_collection if p['arXiv ID'] == arxiv_id), None)
                     if paper:
                         result_papers.append(paper)
-                return render_template('results.html', query=query,papers=result_papers)
+                return render_template('results.html', query=query,papers=result_papers,num_results=len(result_papers))
         else: 
-            return render_template('results.html', query=query, no_results=True)
+            return render_template('results.html', query=query, no_results=True, num_results=0)
     return render_template('search_form.html')
             
 if __name__ == '__main__':
