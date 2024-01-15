@@ -62,15 +62,13 @@ class SearchEngine:
             print(f"{'-'*200}")
 
 if __name__ == "__main__":
-    papers_collection = retrieve_data('../datasets/arXiv_papers_less.json')
-    preprocessed_metadata = {}
-    for paper in papers_collection:
-        document_id = paper['arXiv ID']
-        preprocessed_metadata[document_id] = preprocess_paper(paper)
-    search_engine = SearchEngine(preprocessed_metadata)
+    papers_collection = retrieve_data('../datasets/arXiv_papers.json')
+    search_engine = SearchEngine()
+    search_engine.build_preprocessed_documents(papers_collection)
     search_engine.build_inverted_index()
-    query = 'july 2023'
+    query = 'Training Neural Networks on RAW and HDR Images for Restoration Tasks'
     boolean_results, vsm_results, okapiBM25_results = search_engine.search(query)
+     
     print("VSM Retrieval Results: ",vsm_results)
     print("Boolean Retrieval Results: ",boolean_results)
     print("OkapiBM25 Retrieval Results: ",okapiBM25_results)
