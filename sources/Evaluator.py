@@ -2,7 +2,7 @@ from file_operations import retrieve_data
 from text_processing import preprocess_paper
 from sklearn.metrics import precision_score, recall_score, f1_score
 from SearchEngine import SearchEngine
-
+import matplotlib.pyplot as plt
 class Evaluator:
     def __init__(self, search_engine, ground_truth):
         self.search_engine = search_engine
@@ -43,6 +43,18 @@ class Evaluator:
             'recall': recall,
             'f1': f1,
         }
+    def plot_metrics(self,algorithm, results, queries):
+        for metric_name in ['precision', 'recall', 'f1']:
+            metric_values = [metrics[metric_name] for metrics in results[algorithm]]
+            plt.figure(figsize=(10, 5))
+            plt.bar(queries, metric_values, color='blue', alpha=0.7)
+            plt.title(f"{algorithm} {metric_name.capitalize()} Scores")
+            plt.xlabel('Queries')
+            plt.ylabel(metric_name.capitalize())
+            plt.tight_layout()
+            plt.show()
+
+
 papers_collection = retrieve_data('../datasets/arXiv_papers_less.json')
 preprocessed_metadata = {}
 for paper in papers_collection:
@@ -62,14 +74,15 @@ queries = [
     "Recent Developments in Dark Matter Detection Technologies", # Title Query
     "July 2023" # Date Query
 ]
-
 total_ground_truth = []
 for query in queries:
     _,_,ground_truth = search_engine.search(query)
     total_ground_truth += ground_truth
 evaluator = Evaluator(search_engine, total_ground_truth)
 results = evaluator.evaluate(queries)
-
+for algorithm, metrics_list in results.items():
+    evaluator.plot_metrics(algorithm, results, queries)
+    
 for algorithm, metrics_list in results.items():
     print(f"\nMetrics for {algorithm} retrieval:")
     for i, metrics in enumerate(metrics_list, start=1):
