@@ -1,5 +1,4 @@
 from QueryProcessor import QueryProcessor
-from file_operations import retrieve_data
 from text_processing import preprocess_paper
 from InvertedIndex import InvertedIndex
 from RankingAlgorithms import RankingAlgorithm
@@ -60,24 +59,3 @@ class SearchEngine:
             print(f"Abstract: {paper['Abstract']}")
             print(f"PDF Link: {paper['PDF Link']}")
             print(f"{'-'*200}")
-
-if __name__ == "__main__":
-    papers_collection = retrieve_data('../datasets/arXiv_papers.json')
-    search_engine = SearchEngine()
-    search_engine.build_preprocessed_documents(papers_collection)
-    search_engine.build_inverted_index()
-    query = 'Training Neural Networks on RAW and HDR Images for Restoration Tasks'
-    boolean_results, vsm_results, okapiBM25_results = search_engine.search(query)
-     
-    print("VSM Retrieval Results: ",vsm_results)
-    print("Boolean Retrieval Results: ",boolean_results)
-    print("OkapiBM25 Retrieval Results: ",okapiBM25_results)
-    exit(0)
-    results_ranked = search_engine.rank_results(vsm_results,query)
-    filters = {'Subjects': query}
-    filtered_papers = search_engine.filter_results(results_ranked, filters, papers_collection)
-    if filtered_papers:
-        print(f"Filtered papers based on user-selected criteria:")
-        search_engine.display_results(filtered_papers)
-    else:
-        print("No papers found based on the user-selected criteria.")
