@@ -1,4 +1,6 @@
+# Ignore compiled Python files
 sources/__pycache__
+# Ignore datasets directory
 datasets
 sources/main.py
 sources/api_web_crawler.py
