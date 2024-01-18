@@ -30,7 +30,7 @@ This project implements a comprehensive academic paper search engine using Pytho
 
 ## Future Enhancements 🔮
 
-- **Utilizing arXiv's Public API for Faster Data Collection**
-- **Implementation of Multi-Threading for Data Processing**
-- **Pagination Support for Result Presentation**
-- **Create a Dockerfile**
+### Utilizing arXiv's Public API for Faster Data Collection
+### Implementation of Multi-Threading for Data Processing
+### Pagination Support for Result Presentation
+### Create a Dockerfile
