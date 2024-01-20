@@ -9,6 +9,10 @@ This project implements a comprehensive academic paper search engine using Pytho
 
 ## Getting Started 🛠️
 
+### Prerequisites:
+- Python 3.6 or higher
+- Git
+
 1. **Clone the Repository:**
      ```bash
      git clone https://github.com/MelinaMoraiti/Academic-Papers-Search-Engine.git
