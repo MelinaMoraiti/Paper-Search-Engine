@@ -38,3 +38,7 @@ This project implements a comprehensive academic paper search engine using Pytho
 - [ ] **Implementation of Multi-Threading for Data Processing**
 - [ ] **Pagination Support for Result Presentation**
 - [ ] **Create a Dockerfile**
+
+## Acknowledgements 🙏
+
+- Thank you to arXiv for use of its open access interoperability.
