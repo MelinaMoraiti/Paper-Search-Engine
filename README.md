@@ -20,7 +20,7 @@ This project implements a comprehensive academic paper search engine using Pytho
      ```
 2. **Install Dependencies:**
      ```bash
-     pip install -r requirements.txt
+     pip install --no-cache-dir -r requirements.txt
      ```
 3. **Run the Application:**
      ```bash
