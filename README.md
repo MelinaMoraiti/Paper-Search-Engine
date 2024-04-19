@@ -10,7 +10,7 @@ This project implements a comprehensive academic paper search engine using Pytho
 ## Getting Started 🛠️
 
 ### Prerequisites:
-- Python 3.6 or higher
+- Python 3.9 or higher
 - Git
 
 1. **Clone the Repository:**
