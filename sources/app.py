@@ -4,7 +4,7 @@ from SearchEngine import SearchEngine
 from file_operations import retrieve_data
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
-papers_collection = retrieve_data('../datasets/arXiv_papers.json')
+papers_collection = retrieve_data('../datasets/arXiv_papers_less.json')
 search_engine = SearchEngine()
 search_engine.build_preprocessed_documents(papers_collection)
 search_engine.build_inverted_index()
