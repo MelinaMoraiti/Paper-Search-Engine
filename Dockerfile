@@ -14,7 +14,7 @@ WORKDIR /app/sources
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN python -m nltk.downloader all
+RUN python -m nltk.downloader wordnet punkt
 
 EXPOSE 5000
 
