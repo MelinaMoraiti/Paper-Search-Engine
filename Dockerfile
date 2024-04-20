@@ -4,10 +4,11 @@ FROM python:3.11.4
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the directories contents into the container at /app
-COPY /datasets /app
+# Copy the datasets directory into the container at /app/datasets
+COPY datasets /app/datasets
 
-COPY /sources /app
+# Copy the sources directory into the container at /app/sources
+COPY sources /app/sources
 
 # Change directory to /app/sources
 WORKDIR /app/sources
