@@ -13,9 +13,9 @@ COPY sources /app/sources
 # Change directory to /app/sources
 WORKDIR /app/sources
 
-RUN pip install --no-cache-dir -r requirements.txt
-
-RUN python -m nltk.downloader wordnet punkt
+# Install requirements and download NLTK resources
+RUN pip install --no-cache-dir -r requirements.txt && \
+    python -m nltk.downloader wordnet punkt
 
 EXPOSE 5000
 
