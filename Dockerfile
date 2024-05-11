@@ -11,10 +11,7 @@ RUN pip install --no-cache-dir -r requirements.txt && \
     python -m nltk.downloader wordnet punkt
 
 # Copy the datasets directory into the container at /app/datasets
-COPY datasets /app/datasets
-
-# Copy the sources directory into the container at /app/sources
-COPY sources /app/sources
+COPY datasets sources .
 
 EXPOSE 5000
 
