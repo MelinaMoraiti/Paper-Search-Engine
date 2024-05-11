@@ -4,7 +4,7 @@ FROM python:3.11.4-slim
 WORKDIR /app
 
 # Copy requirements.txt into the container at /app
-COPY requirements.txt requrements.txt
+COPY requirements.txt requirements.txt
 
 # Install requirements and download NLTK resources
 RUN pip install --no-cache-dir -r requirements.txt && \
