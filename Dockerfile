@@ -8,7 +8,7 @@ COPY requirements.txt requirements.txt
 
 # Install requirements and download NLTK resources
 RUN pip install --no-cache-dir -r requirements.txt && \
-    python -m nltk.downloader wordnet punkt
+    python -m nltk.downloader stopwords wordnet punkt
 
 # Copy the datasets directory into the container at /app/datasets
 COPY datasets sources .
