@@ -10,14 +10,12 @@ COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt && \
     python -m nltk.downloader stopwords wordnet punkt
 
-# Copy the datasets directory into the container at /app/datasets
+# Copy the datasets, sources directories into the container at /app
 COPY datasets sources .
 
-# Load environment variables from .env file
-ENV ENV_FILE=.env
-RUN . $ENV_FILE
-
-EXPOSE $FLASK_PORT
+# Copy .env file into the container 
+COPY .env .env
+EXPOSE 5000
 
 CMD ["python", "sources/app.py"]
 
