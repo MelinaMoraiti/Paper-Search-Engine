@@ -22,12 +22,16 @@ This project implements a comprehensive academic paper search engine using Pytho
      ```bash
      pip install -r requirements.txt
      ```
-3. **Run the Application:**
+3. **Download nltk necessary resources:**
+     ```bash
+     python nltk_resources.py
+     ```
+4. **Run the Application:**
      ```bash
      python app.py
      ```
      The web interface should now be accessible at `http://localhost:5000` in your web browser.
-4. **Perform a Search:**
+5. **Perform a Search:**
    -  Perform a search using the user-friendly interface.
    -  Choose a retrieval algorithm from the dropdown list.
    -  Use filtering options to refine your search.
