@@ -4,3 +4,5 @@ sources/__pycache__
 *.csv
 sources/main.py
 sources/api_web_crawler.py
+# Ignore dotenv
+.env
