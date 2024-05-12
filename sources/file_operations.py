@@ -39,11 +39,11 @@ def retrieve_data(file_path):
         raise ValueError("Unsupported file format. Supported formats: 'json', 'csv'")
     return data
 def load_from_json(json_file):
-    with open(json_file, 'r') as file:
+    with open(json_file, 'r', encoding='utf-8') as file:
         papers = json.load(file)
     return papers
 def load_from_csv(csv_file):
-    with open(csv_file, 'r') as file:
+    with open(csv_file, 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         papers = list(reader)
     return papers
