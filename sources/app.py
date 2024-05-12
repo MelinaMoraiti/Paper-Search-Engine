@@ -1,13 +1,16 @@
 from flask import Flask, render_template, request
 import os
+from dotenv import load_dotenv
 from SearchEngine import SearchEngine
 from file_operations import retrieve_data
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
+
+load_dotenv()
 #get environment variables from .env
 host = os.getenv("FLASK_HOST", "127.0.0.1") 
 port = int(os.getenv("FLASK_PORT", 5000))
-debug = os.getenv("FLASK_DEBUG", True).lower() in ['true', '1']
-dataset_path = os.getenv("DATASET_PATH", "../datasets/arXiv_papers_less.json")
+debug = os.getenv("FLASK_DEBUG", "True").lower() in ['true', '1']
+dataset_path = os.getenv("DATASET_PATH","../datasets/arXiv_papers.csv")
 
 papers_collection = retrieve_data(dataset_path)
 search_engine = SearchEngine()
