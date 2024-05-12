@@ -13,7 +13,11 @@ RUN pip install --no-cache-dir -r requirements.txt && \
 # Copy the datasets directory into the container at /app/datasets
 COPY datasets sources .
 
-EXPOSE 5000
+# Load environment variables from .env file
+ENV ENV_FILE=.env
+RUN . $ENV_FILE
+
+EXPOSE $FLASK_PORT
 
 CMD ["python", "sources/app.py"]
 
