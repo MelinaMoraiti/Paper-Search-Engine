@@ -3,8 +3,13 @@ import os
 from SearchEngine import SearchEngine
 from file_operations import retrieve_data
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
+#get environment variables from .env
+host = os.getenv("FLASK_HOST", "127.0.0.1") 
+port = int(os.getenv("FLASK_PORT", 5000))
+debug = os.getenv("FLASK_DEBUG", True).lower() in ['true', '1']
+dataset_path = os.getenv("DATASET_PATH", "../datasets/arXiv_papers_less.json")
 
-papers_collection = retrieve_data('../datasets/arXiv_papers_less.json')
+papers_collection = retrieve_data(dataset_path)
 search_engine = SearchEngine()
 search_engine.build_preprocessed_documents(papers_collection)
 search_engine.build_inverted_index()
@@ -47,4 +52,4 @@ def index():
     return render_template('search_form.html')
             
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host=host, port=port, debug=True)
