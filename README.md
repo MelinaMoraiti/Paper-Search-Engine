@@ -26,12 +26,19 @@ This project implements a comprehensive academic paper search engine using Pytho
      ```bash
      python nltk_resources.py
      ```
-4. **Run the Application:**
+4. **Create a .env file in the root directory of the project and configure it similar to the example.env:**
+     - **FLASK_HOST:** Set the host address for your Flask application. If running locally, you can set this to localhost. If deploying to a server, use the server's IP address or domain name.
+     - **FLASK_PORT:** Define the port number where your Flask application will run. The default Flask port is 5000.
+     - **FLASK_DEBUG:** Enable or disable Flask's debugging mode. When enabled, Flask will reload itself on code changes and provide more detailed error messages. Set to 1/True to enable debugging, or 0/False to disable it.
+Set to 1 to enable debugging, or 0 to disable it.
+     - **DATASET_PATH:** Specify the local file path to the dataset that your Flask application will use.
+     
+5. **Run the Application:**
      ```bash
      python app.py
      ```
      The web interface should now be accessible at `http://localhost:5000` in your web browser.
-5. **Perform a Search:**
+6. **Perform a Search:**
    -  Perform a search using the user-friendly interface.
    -  Choose a retrieval algorithm from the dropdown list.
    -  Use filtering options to refine your search.
